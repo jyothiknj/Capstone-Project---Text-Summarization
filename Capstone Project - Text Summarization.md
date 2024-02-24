@@ -98,79 +98,9 @@ Link to Jupyter notebook - Capstone Project - Text Summarization
 ##### Contact and Further Information
 Naga Jyothi Patchigolla
 
-**Installed transformers, pytorch and wordcloud modules to create wordcloud images**
- 
-!pip install wordcloud 
-
-!pip install transformers==4.11.3
-
-!pip3 install torch torchvision torchaudio
-
-
-```python
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from string import punctuation
-import nltk
-from nltk import word_tokenize, sent_tokenize
-nltk.download('punkt')
-nltk.download('stopwords')
-from nltk.corpus import stopwords
-from datasets import load_metric
-
-```
-
-    [nltk_data] Downloading package punkt to
-    [nltk_data]     C:\Users\neofu\AppData\Roaming\nltk_data...
-    [nltk_data]   Package punkt is already up-to-date!
-    [nltk_data] Downloading package stopwords to
-    [nltk_data]     C:\Users\neofu\AppData\Roaming\nltk_data...
-    [nltk_data]   Package stopwords is already up-to-date!
-    
-
-
-```python
-from nltk.translate.bleu_score import corpus_bleu
-from transformers import pipeline
-```
-
-
-```python
-# Imported the libraries needed for visualization 
-
-import random
-import matplotlib.pyplot as plt
-import seaborn as sns
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
-```
-
-
-```python
-# Using OS module, navigating through the local directories for the News Articles
-
-import os
-import pandas as pd
-path_, filename_, category_, = [],[],[]
-for dirname, _, filenames in os.walk('C:/Users/neofu/Downloads/Jyothi UCB/BBC News Summary/News Articles/sport'):
-    for filename in filenames:
-        path_.append(os.path.join(dirname, filename))
-        filename_.append(filename)
-        category_.append(dirname.split("/")[-1])
-        
-```
-
-
-```python
-# Created a dataframe out of the local directory and files to read each of them easily
-
-df_articles = pd.DataFrame({"path":path_, "filename":filename_, "category":category_, }, columns=["path", "filename", "category"])
-df_articles.head()
-```
-
-
-
-
+#### More Information:
+Using OS module, navigating through the local directories for the News Articles
+Created a dataframe out of the local directory and files to read each of them easily
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -232,25 +162,8 @@ df_articles.head()
 
 
 
-```python
-# Using OS module, navigating through the local directories for the Summaries
 
-path_, filename_, category_, = [],[],[]
-for dirname, _, filenames in os.walk('C:/Users/neofu/Downloads/Jyothi UCB/BBC News Summary/Summaries/sport'):
-    for filename in filenames:
-        path_.append(os.path.join(dirname, filename))
-        filename_.append(filename)
-        category_.append(dirname.split("/")[-1])
-```
-
-
-```python
-df_summaries = pd.DataFrame({"path":path_, "filename":filename_, "category":category_, }, columns=["path", "filename", "category"])
-df_summaries.head()
-```
-
-
-
+Using OS module, navigating through the local directories and created a dataframe for Summaries
 
 <div>
 <style scoped>
@@ -311,120 +224,14 @@ df_summaries.head()
 </div>
 
 
-
-#### Extractive Summarization Function Code
-
-
-
-
-```python
-
-# Created a function to generate summary by extracting the highest scored sentences based on the word frequencies 
-# for the words in each of them
-# Tokenized the received text into words and created a word_frequency dictionary for the words that are not stopwords or punctuation marks
-# Tokenized the received text into sentences and generated sentence scores based upon the data from word frequencies
-# Extracted the highest scored sentences in the order of the index so that flow of text is preserved and joined them as a summary
-
-
-def extractive_summarization(text, summary_length):
-    words = word_tokenize(text)
-    word_frequencies = {}
-    for word in words:
-        if word.lower() not in stopwords.words('english'):
-            if word.lower() not in punctuation:
-                if word not in word_frequencies.keys():
-                    word_frequencies[word.lower()] = 1
-                else:
-                    word_frequencies[word.lower()]+=1
-    max_frequency = max(word_frequencies.values())
-    for word in word_frequencies.keys():
-        word_frequencies[word] = word_frequencies[word]/max_frequency
-    sent_tokens = sent_tokenize(text)
-    sent_scores = {}
-    for sent in sent_tokens:
-        for word in word_tokenize(sent):
-            if word.lower() in word_frequencies.keys():
-                if sent not in sent_scores.keys():
-                    sent_scores[sent] = word_frequencies[word.lower()]
-                else:
-                    sent_scores[sent]+=word_frequencies[word.lower()]
-        dict_Sent = {'Sentence': sent_scores.keys(),
-            'Score': sent_scores.values()}
-    df_sent_scores = pd.DataFrame.from_dict(dict_Sent)
-    summary = df_sent_scores.nlargest(int(float(summary_length)*len(sent_tokens)), 'Score', keep='all').sort_index()
-    final_summary = (' '.join(summary['Sentence']))
-    return(final_summary)
-```
-
-#### Abstractive Summarization Function Code
-
-
-```python
-# Imported the pipeline from the huggingface transformers and instantiated the Summarization pipeline 
-
-summarizer = pipeline('summarization')
-```
-
-    No model was supplied, defaulted to sshleifer/distilbart-cnn-12-6 and revision a4f8f3e (https://huggingface.co/sshleifer/distilbart-cnn-12-6).
-    Using a pipeline without specifying a model name and revision in production is not recommended.
-    
-
-
-```python
-# Passed received text as input and generated abstract summary using the summarization pipeline instance
-
-def abstractive_summarization(text,summary_length):
-    words = word_tokenize(text)
-    abstract_summary = summarizer(text, max_length= int(float(summary_length)*len(words)), min_length = 30, do_sample = False)
-    return(abstract_summary[0]['summary_text'])
-```
 
 #### Receive user input, call the defined abstract and extractive summarization functions, and generate summary and bleu scores
 
-
-```python
-
-num_articles = input("Provide Number of Articles you want to generate summaries for(mention a number between 1 and 5): ")
-summary_len = input("Provide summary size in % of original text. For ex: 0.3 or 0.4 etc.")
-articles = random.sample(range(1, df_articles.shape[0]), int(num_articles))
-extract_scores = []
-abstract_scores = []
-for article in articles:
-    file = open(df_articles['path'][article], 'r')
-    text = file.read()
-    extract_summary = extractive_summarization(text, summary_len)
-    print("FOR ARTICLE #", article)
-    print("\n\nSummary from Extractive Summarization: \n")
-    print(extract_summary)
-    abstract_summary = abstractive_summarization(text, summary_len)
-    print("\n\nSummary from Abstractive Summarization: \n")
-    print(abstract_summary)
-
-    # Scoring the summarized text against the summary from Kaggle dataset
-    summary = open(df_summaries['path'][article], 'r').read()
-    references = [[summary]]
-    print("\n\nSummary from Kaggle Dataset: \n")
-    print(summary)
-    
-    candidates = [extract_summary]
-    extract_scores.append(round(corpus_bleu(references, candidates),4))
-    
-    candidates = [abstract_summary]
-    abstract_scores.append(round(corpus_bleu(references, candidates),4))
-    
-df_scores = {'Article #': articles,
-            'Abstract_scores': abstract_scores,
-            'Extract_scores': extract_scores}
-df_scores = pd.DataFrame(df_scores)
-df_scores
-    
-```
-
     Provide Number of Articles you want to generate summaries for(mention a number between 1 and 5): 2
     Provide summary size in % of original text. For ex: 0.3 or 0.4 etc.0.3
+    
     FOR ARTICLE # 278
-    
-    
+        
     Summary from Extractive Summarization: 
     
     Newcastle line up Babayaro
@@ -440,19 +247,17 @@ df_scores
     Summary from Kaggle Dataset: 
     
     Babayaro has been in the Premiership since 1997 when he moved to Chelsea for Â£2.25m from Anderlecht.Newcastle manager Graeme Souness is closing in on signing Chelsea defender Celestine Babayaro when the transfer window reopens.But he said: "All I can tell you is that the chairman has worked really hard in the last couple of months to try to do deals.
+    
     FOR ARTICLE # 285
-    
-    
+       
     Summary from Extractive Summarization: 
     
     "We didn't play last week against Scotland and we didn't play in the first half against England," he said. When you miss some it's very hard mentally, but it went well for us," he said. "We know we have to play better to defend the title," he said. "I'm not happy we didn't score a try but we're happy because we won."
     
-    
     Summary from Abstractive Summarization: 
     
-     France beat England 18-17 in Six Nations clash at Twickenham . Dimitri Yachvili kicked all of France's points as they staged a second-half revival . England's Charlie Hodgson and Olly Barkley missed six penalties and a drop goal chance .
-    
-    
+    France beat England 18-17 in Six Nations clash at Twickenham . Dimitri Yachvili kicked all of France's points as they staged a second-half revival . England's Charlie Hodgson and Olly Barkley missed six penalties and a drop goal chance .
+       
     Summary from Kaggle Dataset: 
     
     "We didn't play last week against Scotland and we didn't play in the first half against England," he said."We said we only had 11 points against us, which was not much.When you miss some it's very hard mentally, but it went well for us," he said.France scrum-half Dimitri Yachvili praised his team after they fought back to beat England 18-17 in the Six Nations clash at Twickenham."We know we have to play better to defend the title," he said.We were just defending in the first half and we said we had to put them under pressure.France were 17-6 down at half-time, but Pelous said: "No-one was down at half-time, we were still confident.
@@ -508,82 +313,19 @@ df_scores
 From the above bleu scores it shows for aritle 278 from Sports, the abstract summary generated is only a 28% match with the summary from the dataset. While the Extractive summary generated matches 72% with the summary from the dataset.
 It's as expected since the description of the dataset mentioned the summaries provided are extractive summaries. And Bleu scores are based on n-gram matches. So, it's obvious that extractive summary bleu score will be greater than abstract summary score**
 
-
-```python
-def visualize(text):
-    word_cloud = WordCloud(stopwords =stopwords.words('english'),max_font_size=100,background_color="white").generate(text)
-    plt.figure(figsize = (8,10))
-    plt.imshow(word_cloud, interpolation="bilinear")
-    plt.axis("off")
-    plt.show()
-    
-    #punctuation = punctuation+ "\n"
-    
-    #Calculating Word Frequencies
-    
-    words = word_tokenize(text)
-    word_frequencies = {}
-    for word in words:
-        if word.lower() not in stopwords.words('english'):
-            if word.lower() not in punctuation:
-                if word not in word_frequencies.keys():
-                    word_frequencies[word.lower()] = 1
-                else:
-                    word_frequencies[word.lower()]+=1
-    word_freq_dict = {'Word': word_frequencies.keys(),
-                     'Frequency': word_frequencies.values()}
-    word_freq = pd.DataFrame.from_dict(word_freq_dict).sort_values(by='Frequency', ascending = False) 
-   
-    
-    #Calculating Sentence Scores based on word frequencies
-    
-    sent_tokens = sent_tokenize(text)
-    sent_scores = {}
-    for sent in sent_tokens:
-        for word in word_tokenize(sent):
-            if word.lower() in word_frequencies.keys():
-                if sent not in sent_scores.keys():
-                    sent_scores[sent] = word_frequencies[word.lower()]
-                else:
-                    sent_scores[sent]+=word_frequencies[word.lower()]
-    dict_Sent = {'Sentence': sent_scores.keys(),
-            'Score': sent_scores.values()}
-    df_sent_scores = pd.DataFrame.from_dict(dict_Sent)
-    return(word_freq, df_sent_scores)
-```
-
-
-```python
-user_input = input("Do you want to visualize the wordcloud, word frequencies, sentence scores for your own text? Type Yes/No : ")
-if user_input == 'Yes':
-    user_text = input("Provide your own text: ")
-    user_summ  =input("Do you want to Summarize? Type Yes/No: ")
-    word_freq, df_sent_scores = visualize(user_text)
-    if user_summ == 'Yes':
-        extract_summary = extractive_summarization(user_text, 0.2)
-        print("\n\nSummary from Extractive Summarization: \n")
-        print(extract_summary)
-        abstract_summary = abstractive_summarization(user_text, 0.2)
-        print("\n\nSummary from Abstractive Summarization: \n")
-        print(abstract_summary)
-    else:
-        print("Hope you liked the visualizations")
-else:
-    print("See you next time")
-```
+Prompt to receive user text, visualize and summarize:
 
     Do you want to visualize the wordcloud, word frequencies, sentence scores for your own text? Type Yes/No : Yes
-    Provide your own text: Robben and Cole earn Chelsea win  Cheslea salvaged a win against a battling Portsmouth side just as it looked like the Premiership leaders would have to settle for a point.  Arjen Robben curled in a late deflected left-footed shot from the right side of Pompey's box to break the home side's brave resistance. Chelsea had been continually frustrated but Joe Cole added a second with a 20-yard shot in injury-time. Nigel Quashie had Pompey's best chance when his effort was tipped over. The Fratton Park crowd were in good voice as usual and, even though Portsmouth more than held their own, Chelsea still managed to carve out two early chances. Striker Didier Drogba snapped in an angled shot to force home keeper Shaka Hislop into a smart save while an unmarked Frank Lampard had a strike blocked by Arjan De Zeeuw. But Pompey chased, harried and unsettled a Chelsea side as the south-coast side started to gain the upper hand and almost took the lead through Quashie.  The midfielder struck a swerving long range shot which keeper Petr Cech tipped over at full stretch. Pompey stretched Arsenal to the limit recently and were providing a similarly tough obstacle to overcome for a Chelsea team struggling to exert any pressure. Velimir Zajec's players stood firm as the visitors came out in lively fashion after the break but, just as they took a stranglehold of the match, the visitors launched a counter-attack. Drogba spun to get a sight of goal and struck a fierce shot which rocked keeper Hislop back as he blocked before Arjan de Zeeuw cleared the danger.  The home side were also left breathing a sigh of relief when a Glen Johnson header fell to Gudjohnsen who had his back to goal in a crowded Pompey goalmouth. The Icelandic forward tried to acrobatically direct the ball into goal but put his effort over. But, just like against Arsenal, Portsmouth let in a late goal when Robben's shot took a deflection off Matthew Taylor on its way past a wrong-footed Hislop. And Cole put a bit of gloss on a hard-fought win when he put a low shot into the bottom of the Pompey net.  Hislop, Griffin, Primus, De Zeeuw, Taylor, Stone (Cisse 76), Quashie (Berkovic 83), Faye, O'Neil, Kamara (Fuller 65), Yakubu.  Subs Not Used: Berger, Ashdown.  Kamara.  Cech, Paulo Ferreira, Gallas, Terry, Johnson, Duff, Makelele, Smertin (Cole 73), Lampard, Robben (Geremi 81), Drogba (Gudjohnsen 58).  Subs Not Used: Cudicini, Bridge.  Paulo Ferreira, Robben, Lampard.  Robben 79, Cole 90.  20,210  A Wiley (Staffordshire).
+    
+    Provide your own text: 
+    Robben and Cole earn Chelsea win  Cheslea salvaged a win against a battling Portsmouth side just as it looked like the Premiership leaders would have to settle for a point.  Arjen Robben curled in a late deflected left-footed shot from the right side of Pompey's box to break the home side's brave resistance. Chelsea had been continually frustrated but Joe Cole added a second with a 20-yard shot in injury-time. Nigel Quashie had Pompey's best chance when his effort was tipped over. The Fratton Park crowd were in good voice as usual and, even though Portsmouth more than held their own, Chelsea still managed to carve out two early chances. Striker Didier Drogba snapped in an angled shot to force home keeper Shaka Hislop into a smart save while an unmarked Frank Lampard had a strike blocked by Arjan De Zeeuw. But Pompey chased, harried and unsettled a Chelsea side as the south-coast side started to gain the upper hand and almost took the lead through Quashie.  The midfielder struck a swerving long range shot which keeper Petr Cech tipped over at full stretch. Pompey stretched Arsenal to the limit recently and were providing a similarly tough obstacle to overcome for a Chelsea team struggling to exert any pressure. Velimir Zajec's players stood firm as the visitors came out in lively fashion after the break but, just as they took a stranglehold of the match, the visitors launched a counter-attack. Drogba spun to get a sight of goal and struck a fierce shot which rocked keeper Hislop back as he blocked before Arjan de Zeeuw cleared the danger.  The home side were also left breathing a sigh of relief when a Glen Johnson header fell to Gudjohnsen who had his back to goal in a crowded Pompey goalmouth. The Icelandic forward tried to acrobatically direct the ball into goal but put his effort over. But, just like against Arsenal, Portsmouth let in a late goal when Robben's shot took a deflection off Matthew Taylor on its way past a wrong-footed Hislop. And Cole put a bit of gloss on a hard-fought win when he put a low shot into the bottom of the Pompey net.  Hislop, Griffin, Primus, De Zeeuw, Taylor, Stone (Cisse 76), Quashie (Berkovic 83), Faye, O'Neil, Kamara (Fuller 65), Yakubu.  Subs Not Used: Berger, Ashdown.  Kamara.  Cech, Paulo Ferreira, Gallas, Terry, Johnson, Duff, Makelele, Smertin (Cole 73), Lampard, Robben (Geremi 81), Drogba (Gudjohnsen 58).  Subs Not Used: Cudicini, Bridge.  Paulo Ferreira, Robben, Lampard.  Robben 79, Cole 90.  20,210  A Wiley (Staffordshire).
+
     Do you want to Summarize? Type Yes/No: Yes
     
 
 
     
 ![png](output_18_1.png)
-    
-
-
-    
     
     Summary from Extractive Summarization: 
     
@@ -597,15 +339,9 @@ else:
 
 #### Generating Word Cloud
 
-
-```python
-sns.barplot(word_freq.head(30), x='Frequency',y='Word', ) 
-```
+#### Plotting a bar plot to depict the high frequency words
 
 
-
-
-    <Axes: xlabel='Frequency', ylabel='Word'>
 
 
 
@@ -615,12 +351,7 @@ sns.barplot(word_freq.head(30), x='Frequency',y='Word', )
     
 
 
-
-```python
-df_sent_scores 
-```
-
-
+#### Sentence Scores based on the word frequnecies in each sentence
 
 
 <div>
@@ -766,8 +497,3 @@ df_sent_scores
 </div>
 
 
-
-
-```python
-
-```
