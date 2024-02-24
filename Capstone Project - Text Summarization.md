@@ -102,19 +102,7 @@ Naga Jyothi Patchigolla
 Using OS module, navigating through the local directories for the News Articles
 Created a dataframe out of the local directory and files to read each of them easily
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -166,19 +154,7 @@ Created a dataframe out of the local directory and files to read each of them ea
 Using OS module, navigating through the local directories and created a dataframe for Summaries
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -267,19 +243,7 @@ Using OS module, navigating through the local directories and created a datafram
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -323,7 +287,7 @@ Prompt to receive user text, visualize and summarize:
     Do you want to Summarize? Type Yes/No: Yes
     
 
-
+#### Generated Word Cloud
     
 ![png](output_18_1.png)
     
@@ -337,7 +301,7 @@ Prompt to receive user text, visualize and summarize:
      Arjen Robben curled in a late deflected shot from the right side of Pompey's box to break the home side's brave resistance . Joe Cole added a second with a 20-yard shot in injury-time to seal a 2-1 win .
     
 
-#### Generating Word Cloud
+
 
 #### Plotting a bar plot to depict the high frequency words
 
@@ -355,19 +319,7 @@ Prompt to receive user text, visualize and summarize:
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
