@@ -1,4 +1,4 @@
-### Capstone Project - Text Summarization & Text Classification
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/725a1d26-b9da-4e1e-8921-922ccb524d09)### Capstone Project - Text Summarization & Text Classification
 
 **Naga Jyothi Patchigolla**
 
@@ -462,7 +462,7 @@ Prompt to receive user text, visualize and summarize:
 
 **Summaries Countplot**
 
-![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/dc7a4d58-425d-4730-9a47-faadaa0441e7)
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/649d4c59-008a-44a1-9f3e-827472cbdd9f)
 
 **Artile and Summary lengths**
 
@@ -480,3 +480,107 @@ Prompt to receive user text, visualize and summarize:
 
 Clearly it's observed that there are 5 categories of articles and summaries
 Average Summary length for each article is around 0.4 times the article length. This is clearly depicted in the histplots.
+
+### Exploratory Data Analysis contd...
+
+1. Read the articles and summaries using file operations and added them to the dataframe as new columns **'article_text'** and **'summary_text'**
+
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/edf7678e-f8c8-424e-a108-d1834a9bba8d)
+
+2. As we would like to train classification models on the article texts to predict the category article belongs to, created a new dataframe and series object with the article texts and categories as X and y.
+
+3. Split the dataset into training and test datasets using train_test_split function with a test_size of 0.3. 
+
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/2bfb147d-294a-44f5-b0a0-f172cda6910c)
+
+### Feature Engineering
+
+Performed the below feature engineering techniques on the article text for both training and test datasets
+1. Tokenized the words
+2. Performed Lemmatization
+3. Removed the stop words and punctuation
+
+**Before Feature engineering,**
+
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/a0cc4432-3e63-4059-8ab5-329efbb6715d)
+
+**After Feature engineering**
+
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/23110b4b-d7e1-435f-a656-77f9b81b0fbc)
+
+### Bag of Words
+
+Now after completing the feature engineering, the article texts are ready for conversion to numerical features and train the classification models
+
+Vectorized the words from article using **CountVectorizer** first and fit the training data to **LogisticRegression, Naive Bayes,SVM and AdaBoost** classifiers.
+
+Sample of numerical features can be seen below - 
+
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/6b3c159a-565b-4773-afef-1dd584c392a6)
+
+For the CountVectorizer, the best parameters found through GridSearchCV are:
+
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/680f8f83-aa58-40a5-8fd4-716a90fb337a)
+
+For TFidVectorizer, the best parameters found through GridSearchCV are:
+
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/c87d6a81-4bfa-4b35-bc02-03ec578e91d4)
+
+### Modeling
+
+1. 1Using these best parameters for each of these vectorizers, we fit the training data to the machine learning models.
+2. First we trained against simple models with default parameters and observed the accuracy scores.
+3. Then we improved the models by doing a GridSearchCV with different hyperparameter values and selected the best hyperparameters.
+4. Trained these estimators with the best hyperparameter values and measured accuracy scores against the validation data set.
+
+**Below are the accuracy scores computed**
+
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/1858666c-dda3-450e-b98a-b45c0c3b25c3)
+
+#### Observations
+
+From the above table of accuracies, it's evident that with the text classification, Adaboost gives the least accuracy. 
+When CountVectorizer is used to vectorize the words, Naive Bayes gives the best accuracy. 
+With TfidVectorizer, accuracies of Naive Bayes, LogisticRegression and SVC are almost the same. SVC is just a little bit higher.
+
+Now we will move forward with improving the model.
+
+### Model Improvement 
+
+Find the best hyperparameters for each of the ML models using GridSearchCV
+Fit the best estimators with the training data set 
+Compute the accuracy scores against the validation data set for each of the models
+
+**Best Hyperparameters for each model**
+
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/a2ba0a69-e2ac-427d-a1a9-1b5f3d15a5b6)
+
+**Accuracy Scores of the validation dataset**
+
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/7a059f9c-a2f6-407a-9b02-38f637b569b0)
+
+### Observations of Improved models
+
+From the test accuracies computed, it's evident that when we vectorize the articles' text with TFIDF Vectorizer and fit the model LogisticRegression with the data, with model's hyper parameters multi_class = 'multinomial', gives the best accurate predictions
+
+### Confusion Matrix
+Using the best model LogisticRegression, predicted the categories for the articles in the validation dataset and created the Confusion Matrix
+
+**Below are the value counts of the categories in Validation dataset**
+
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/9e7b4cb9-1f08-431d-a884-e1ff7a60972a)
+
+**Below is the Confusion Matrix**
+
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/8ab520b9-9ff1-48e5-8ddd-1ac5d8f393ca)
+
+### Conclusion
+
+By trying various classificaiton models to predict the category what an article is about, we see that using TfidVectorizer to vectorize the text and fitting the model LogisticRegression would yield the best predictions. The Confusion matrix also confirms that this gives the highest accuracy and precision scores.
+
+### Next Steps
+
+Continue training different ensemble models and find out if there is a better model than LogisticRegression to classify the BBC News Summary data 
+
+#### Outline of project
+Link to Jupyter notebook - Capstone Project - Text Classification
