@@ -458,23 +458,23 @@ Prompt to receive user text, visualize and summarize:
 
 **Articles Countplot**
 
-![image-2.png](attachment:image-2.png)
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/c8b98b9d-7eac-42dc-a2be-720a939623aa)
 
 **Summaries Countplot**
 
-![image-3.png](attachment:image-3.png)
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/dc7a4d58-425d-4730-9a47-faadaa0441e7)
 
 **Artile and Summary lengths**
 
-![image.png](attachment:image.png)
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/cc9558ac-ee65-4195-aff0-467a66265dc8)
 
 **Histplot of the Article lengths**
 
-![image-4.png](attachment:image-4.png)
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/bc100b2f-1df8-47ac-ad8c-7edd78b52e4f)
 
 **Histplot of Summary lengths**
 
-![image-5.png](attachment:image-5.png)
+![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/7e884184-a1d5-4fa7-99c3-3e7340bb94b2)
 
 ### Observations
 
