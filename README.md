@@ -92,6 +92,7 @@ Need to explore the other text evaluation techniques that are not based on the n
 
 #### Outline of project
 Link to Jupyter notebook - Capstone Project - Text Summarization
+https://github.com/jyothiknj/Capstone-Project---Text-Summarization/blob/4b0e4413507bbfad0c688329b2e85f545d8aacb7/Capstone%20Project%20-%20Text%20Summarization%20Notebook.ipynb
 
 ##### Contact and Further Information
 Naga Jyothi Patchigolla
