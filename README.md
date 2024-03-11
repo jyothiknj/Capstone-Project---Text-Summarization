@@ -447,3 +447,36 @@ Prompt to receive user text, visualize and summarize:
 </div>
 
 
+### TEXT CLASSIFICATION
+
+### Exploratory Data Analysis
+
+1. Read the articles and summaries in to dataframes
+2. Plotted the number of articles present in each category using countplot visualizaiton from seaborn library
+3. Computed the article length, summary length for each article in the dataset
+4. Plotted the article lengths and summary lengths in a seaborn histogram by various categories
+
+**Articles Countplot**
+
+![image-2.png](attachment:image-2.png)
+
+**Summaries Countplot**
+
+![image-3.png](attachment:image-3.png)
+
+**Artile and Summary lengths**
+
+![image.png](attachment:image.png)
+
+**Histplot of the Article lengths**
+
+![image-4.png](attachment:image-4.png)
+
+**Histplot of Summary lengths**
+
+![image-5.png](attachment:image-5.png)
+
+### Observations
+
+Clearly it's observed that there are 5 categories of articles and summaries
+Average Summary length for each article is around 0.4 times the article length. This is clearly depicted in the histplots.
