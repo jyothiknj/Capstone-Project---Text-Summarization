@@ -1,20 +1,19 @@
-### Capstone Project - Text Summarization
+### Capstone Project - Text Summarization & Text Classification
 
 **Naga Jyothi Patchigolla**
 
 #### Executive summary
 
-
-
-
 #### Rationale
 
 As a Program Manager, I do capture meeting notes and action items for every meeting summarizing all the points of discussion. I see there are many summarizing platforms available now, there is one on zoom as well that automatically creates meeting notes from a meeting transcript. It’s important for me to understand how these summaries are generated and how reliable they are, so that we can use them with confidence.
+Also, it's important to understand how the model classifies text as decisions or action items or just notes.
 
 #### Research Question
 
 What are different ways to summarize a text? 
 And how good is the summarized text that’s generated out of the NLP models?
+What is the best classification model to classify the text?
 
 #### Data Sources
 
@@ -22,16 +21,15 @@ Data source: Kaggle
 
 Dataset used: https://www.kaggle.com/datasets/pariza/bbc-news-summary
 
-Description: This dataset for extractive text summarization has four hundred and seventeen political news articles of BBC from 2004 to 2005 in the News Articles folder. For each article, summaries are provided. 
+Description: This dataset for extractive text summarization has total of 2225 news articles of BBC from 2004 to 2005 in the News Articles folder. For each article, summaries are provided. 
 
-
+### Text Summarization
 
 #### Methodology
 
 In this notebook, I have generated summaries using both Abstractive and Extractive methods for the tech articles. 
 Calculated and compared the Corpus_Bleu scores for each of the summaries with reference to the summaries from Kaggle dataset.
 Created wordcloud, word frequencies bar chart visualizations and printed sentence scores for the user requested text input.
-
 
 #### Techniques:
 
@@ -55,7 +53,7 @@ Created two User prompt codes
 1. Prompted user to provide the text for which they want to see the visualizations and the summary
 2. Also took summary length as the % of original text they would like to see as summary
 
-### Text Summarization
+### Summarization Process
 
 Read the text from the file and performed below steps to generate summary
 
