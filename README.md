@@ -584,3 +584,4 @@ Continue training different ensemble models and find out if there is a better mo
 
 #### Outline of project
 Link to Jupyter notebook - Capstone Project – Text Classification
+https://github.com/jyothiknj/Capstone-Project---Text-Summarization/blob/e6fc3f06717b46203d443b50c8bbcbb2012a5373/Capstone%20Project%20-%20Text%20Classification.ipynb
