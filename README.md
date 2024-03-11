@@ -23,7 +23,7 @@ Dataset used: https://www.kaggle.com/datasets/pariza/bbc-news-summary
 
 Description: This dataset for extractive text summarization has total of 2225 news articles of BBC from 2004 to 2005 in the News Articles folder. For each article, summaries are provided. 
 
-### Text Summarization
+### TEXT SUMMARIZATION
 
 #### Methodology
 
@@ -53,7 +53,7 @@ Created two User prompt codes
 1. Prompted user to provide the text for which they want to see the visualizations and the summary
 2. Also took summary length as the % of original text they would like to see as summary
 
-### Summarization Process
+#### Summarization Process
 
 Read the text from the file and performed below steps to generate summary
 
