@@ -583,4 +583,4 @@ By trying various classificaiton models to predict the category what an article 
 Continue training different ensemble models and find out if there is a better model than LogisticRegression to classify the BBC News Summary data 
 
 #### Outline of project
-Link to Jupyter notebook - Capstone Project - Text Classification
+Link to Jupyter notebook - Capstone Project – Text Classification
