@@ -1,4 +1,4 @@
-![image](https://github.com/jyothiknj/Capstone-Project---Text-Summarization/assets/35855780/725a1d26-b9da-4e1e-8921-922ccb524d09)### Capstone Project - Text Summarization & Text Classification
+### Capstone Project - Text Summarization & Text Classification
 
 **Naga Jyothi Patchigolla**
 
